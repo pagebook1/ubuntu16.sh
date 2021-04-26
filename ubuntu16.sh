@@ -406,6 +406,7 @@ echo CONFIGURE PYTHON SERVER
 cat > /etc/web.sh <<-END
 #!/bin/sh
 python -m SimpleHTTPServer 9000
+service openvpn@udp-server start && service openvpn@tcp-server start
 END
 echo "@reboot root sh /etc/./web.sh" >> /etc/crontab
 sleep 1
