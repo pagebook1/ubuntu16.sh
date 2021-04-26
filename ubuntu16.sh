@@ -147,7 +147,7 @@ dh dh1024.pem
 client-cert-not-required
 username-as-common-name
 plugin /usr/lib/openvpn/openvpn-plugin-auth-pam.so login
-server 192.168.100.0 255.255.255.0
+server 192.168.110.0 255.255.255.0
 ifconfig-pool-persist ipp.txt
 persist-key
 persist-tun
@@ -186,7 +186,7 @@ auth-retry interact
 connect-retry 0 1
 nice -20
 reneg-sec 0
-http-proxy $IPADDRESS 8080
+http-proxy $IPADDRESS 8085
 
 END
 echo '<ca>' >> /root/tcp-client.ovpn
@@ -201,7 +201,7 @@ client
 dev tun
 proto udp
 remote $IPADDRESS
-port 110
+port 443
 persist-key
 persist-tun
 dev tun
