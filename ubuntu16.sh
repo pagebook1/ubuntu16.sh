@@ -410,7 +410,7 @@ END
 echo "@reboot root sh /etc/./web.sh" >> /etc/crontab
 sleep 1
 echo Remove ping outside the server 
-echo  net.ipv4.icmp_echo_ignore_all=1 >> /etc/sysctl.conf
+echo net.ipv4.icmp_echo_ignore_all=1 >> /etc/sysctl.conf
 sleep 1
 echo Applying Menu..
 cd /usr/local/bin/
