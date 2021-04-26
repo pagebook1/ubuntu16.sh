@@ -79,8 +79,8 @@ sed -i 's|export KEY_SIZE=2048|export KEY_SIZE=1024|' /etc/openvpn/easy-rsa/vars
 # create diffie-helman pem
 openssl dhparam -out /etc/openvpn/dh1024.pem 1024 2> /dev/null
 # create pki
-if [[ ! -f /etc/openvpn/easy-rsa/openssl.cnf]]
-    then
+if [ ! -f /etc/openvpn/easy-rsa/openssl.cnf ]
+then
     cp /etc/openvpn/easy-rsa/openssl-0.9.8.cnf /etc/openvpn/easy-rsa/openssl.cnf
     else
     echo openssl.cnf exists!
