@@ -1,6 +1,15 @@
 #!/bin/sh
 #COMMAND: sudo wget https://www.dropbox.com/s/1fq093z0gxcvsv1/ubuntu16.sh && chmod +x ubuntu16.sh && bash ./ubuntu16.sh
 echo "ServerAliveInterval 60" >> /etc/ssh/ssh_config && service ssh restart && service sshd restart
+echo Enter License Key: 
+read license
+if [ $license == 'kevinbeetle' ]
+then
+echo   SERVER SCRIPT INSTALLING 
+else
+    echo Invalid License Key.
+    exit
+fi
 IPADDRESS=$(wget -qO- ipv4.icanhazip.com)
 IPADD="s/ipaddresxxx/$IPADDRESS/g";
 # clean repo
@@ -445,9 +454,9 @@ zip /var/www/html/openvpnconfig.zip tcp-client.ovpn udp-client.ovpn
 cp udp-client.ovpn /var/www/html/udp-client.ovpn && cp tcp-client.ovpn /var/www/html/tcp-client.ovpn
 #make html download files
 cat > /var/www/html/index.html <<-END
-<p>Download your zip <a href="/openvpnconfig.zip">Files Here</p>
-<p>Download your <a href="/tcp-client.ovpn">TCP Files Here</p>
-<p>Download your <a href="/udp-client.ovpn">UDP Files Here</p>
+<p>Download your zip <a href="/openvpnconfig.zip">Files Here</a></p>
+<p>Download your <a href="/tcp-client.ovpn">TCP Files Here</a></p>
+<p>Download your <a href="/udp-client.ovpn">UDP Files Here</a></p>
 END
 echo =============== VPS DESCRIPTION =======================
 echo SSH: 1025
