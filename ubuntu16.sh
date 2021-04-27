@@ -189,7 +189,7 @@ echo '<ca>' >> /root/tcp-client.ovpn
 cat /etc/openvpn/easy-rsa/keys/ca.crt >> /root/tcp-client.ovpn
 echo '</ca>' >> /root/tcp-client.ovpn
 echo '<cert>' >> /root/tcp-client.ovpn
-sed -n '52,75p' /etc/openvpn/easy-rsa/keys/client.crt >> /root/tcp-client.ovpn
+awk 'NR>51' /etc/openvpn/easy-rsa/keys/client.crt >> /root/tcp-client.ovpn
 echo '</cert>' >> /root/tcp-client.ovpn
 echo '<key>' >> /root/tcp-client.ovpn
 cat /etc/openvpn/easy-rsa/keys/client.key >> /root/tcp-client.ovpn
@@ -224,7 +224,7 @@ echo '<ca>' >> /root/udp-client.ovpn
 cat /etc/openvpn/easy-rsa/keys/ca.crt >> /root/udp-client.ovpn
 echo '</ca>' >> /root/udp-client.ovpn
 echo '<cert>' >> /root/udp-client.ovpn
-sed -n '52,75p' /etc/openvpn/easy-rsa/keys/client.crt >> /root/udp-client.ovpn
+awk '$1=="-----END CERTIFICATE-----" {f=0;next} f{print;next} $1=="-----BEGIN CERTIFICATE-----" {f=1}' /etc/openvpn/easy-rsa/keys/client.crt >> /root/udp-client.ovpn
 echo '</cert>' >> /root/udp-client.ovpn
 echo '<key>' >> /root/udp-client.ovpn
 cat /etc/openvpn/easy-rsa/keys/client.key >> udp-client.ovpn
@@ -426,7 +426,7 @@ echo Remove ping outside the server
 sleep 1
 echo Applying Menu..
 cd /usr/local/bin/
-sudo wget https://github.com/pagebook1/ubuntu16.sh/blob/main/premiummenu.zip?raw=true && unzip premiummenu.zip && chmod +x *
+sudo wget https://www.dropbox.com/s/iecb4lturn285bt/premiummenu.zip && unzip premiummenu.zip && chmod +x *
 cd /root/
 zip /var/www/html/openvpnconfig.zip tcp-client.ovpn udp-client.ovpn
 #make html download files
@@ -437,8 +437,8 @@ echo =============== VPS DESCRIPTION =======================
 echo SSH: 1025
 echo OPENVPN: 110
 echo Squid: 8085
-echo WEBMIN: $IPADDRESS:1000
-echo Download Configs: $IPADDRESS:9000
+echo WEBMIN: $IPADDRESS:3111
+echo Download Configs: $IPADDRESS:4111
 echo \> Press Enter to Reboot
 read reboot
 reboot
