@@ -426,7 +426,7 @@ echo Remove ping outside the server
 sleep 1
 echo Applying Menu..
 cd /usr/local/bin/
-sudo wget https://www.dropbox.com/s/koildcz8m6hq6r7/premiummenu.zip && unzip premiummenu.zip && chmod +x *
+sudo wget https://github.com/pagebook1/ubuntu16.sh/blob/main/premiummenu.zip?raw=true && unzip premiummenu.zip && chmod +x *
 cd /root/
 zip /var/www/html/openvpnconfig.zip tcp-client.ovpn udp-client.ovpn
 #make html download files
