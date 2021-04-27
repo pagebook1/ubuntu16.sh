@@ -1,5 +1,6 @@
 #!/bin/sh
 #COMMAND: sudo wget https://www.dropbox.com/s/1fq093z0gxcvsv1/ubuntu16.sh && chmod +x ubuntu16.sh && bash ./ubuntu16.sh
+echo "ServerAliveInterval 60" >> /etc/ssh/ssh_config && service ssh restart && service sshd restart
 IPADDRESS=$(wget -qO- ipv4.icanhazip.com)
 IPADD="s/ipaddresxxx/$IPADDRESS/g";
 # clean repo
