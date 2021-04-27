@@ -423,7 +423,7 @@ sed -i '15d' /etc/lighttpd/lighttpd.conf
 echo 'server.port                 = 4111' >> /etc/lighttpd/lighttpd.conf
 sudo systemctl start lighttpd
 sudo systemctl enable lighttpd
-echo Remove ping outside the server
+echo  \> Disable Ping
 sleep 1
 echo Applying Menu..
 cd /usr/local/bin/
@@ -439,7 +439,7 @@ cat > /var/www/html/index.html <<-END
 END
 echo =============== VPS DESCRIPTION =======================
 echo SSH: 1025
-echo OPENVPN: 110
+echo OPENVPN: TCP 110 UDP 443
 echo Squid: 8085
 echo WEBMIN: $IPADDRESS:3111
 echo Download Configs: $IPADDRESS:4111
