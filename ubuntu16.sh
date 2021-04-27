@@ -446,8 +446,12 @@ echo "export PATH=$PATH:/usr/local/bin/premiummenu/" >> ~/.bash_profile
 source ~/.bash_profile
 
 echo \> Remove password Complexity
-sed -i '25,26p' /etc/pam.d/common-password
-sed -i " 25i password        [success=1 default=ignore]      pam_unix.so minlen=1 sha512" /etc/pam.d/common-password
+cat > /etc/pam.d/common-password <<-END
+password        [success=1 default=ignore]      pam_unix.so minlen=1 sha512
+password        requisite                       pam_deny.so
+password        required                        pam_permit.so
+password        optional        pam_gnome_keyring.so
+END
 
 cd /root/
 zip /var/www/html/openvpnconfig.zip tcp-client.ovpn udp-client.ovpn
