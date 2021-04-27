@@ -11,11 +11,13 @@ apt-get update > /dev/null
 # full upgrade
 apt-get -y full-upgrade > /dev/null
 echo \> Done!!
-echo "Enter your Server Name: "
-read servername
-echo "Enter your Email Address: "
-read email
+#echo "Enter your Server Name: "
+#read servername
+#echo "Enter your Email Address: "
+#read email
 #install webmin
+servername = OnePHVPN
+email = OnePH@VPN
 sed -i '$ a deb http://download.webmin.com/download/repository sarge contrib' /etc/apt/sources.list
 wget http://www.webmin.com/jcameron-key.asc
 sudo apt-key add jcameron-key.asc
