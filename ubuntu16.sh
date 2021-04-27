@@ -68,7 +68,7 @@ sed -i 's|export KEY_PROVINCE="CA"|export KEY_PROVINCE="LUC"|' /etc/openvpn/easy
 sed -i 's|export KEY_CITY="SanFrancisco"|export KEY_CITY="Lucena City"|' /etc/openvpn/easy-rsa/vars
 sed -i 's|export KEY_ORG="Fort-Funston"|export KEY_ORG="KEV"|' /etc/openvpn/easy-rsa/vars
 sed -i 's|export KEY_EMAIL="me@myhost.mydomain"|export KEY_EMAIL="'$email'"|' /etc/openvpn/easy-rsa/vars
-sed -i 's|export KEY_OU="MyOrganizationalUnit"|export KEY_OU="jeromelaliag"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_OU="MyOrganizationalUnit"|export KEY_OU="kevinbeetle"|' /etc/openvpn/easy-rsa/vars
 sed -i 's|export KEY_NAME="EasyRSA"|export KEY_NAME="'$servername'"|' /etc/openvpn/easy-rsa/vars
 sed -i 's|export KEY_OU=changeme|export KEY_OU='$servername'|' /etc/openvpn/easy-rsa/vars
 sed -i 's|export KEY_SIZE=2048|export KEY_SIZE=1024|' /etc/openvpn/easy-rsa/vars
@@ -186,13 +186,13 @@ http-proxy $IPADDRESS 8085
 
 END
 echo '<ca>' >> /root/tcp-client.ovpn
-cat /etc/openvpn/ca.crt >> /root/tcp-client.ovpn
+cat /etc/openvpn/easy-rsa/keys/ca.crt >> /root/tcp-client.ovpn
 echo '</ca>' >> /root/tcp-client.ovpn
 echo '<cert>' >> /root/tcp-client.ovpn
-cat /etc/openvpn/ca.crt >> /root/tcp-client.ovpn
+sed -n '52,75p' /etc/openvpn/easy-rsa/keys/client.crt >> /root/tcp-client.ovpn
 echo '</cert>' >> /root/tcp-client.ovpn
 echo '<key>' >> /root/tcp-client.ovpn
-cat /etc/openvpn/ca.crt >> /root/tcp-client.ovpn
+cat /etc/openvpn/easy-rsa/keys/client.key >> /root/tcp-client.ovpn
 echo '</key>' >> /root/tcp-client.ovpn
 echo \> Done!!!
 sleep 1
@@ -221,13 +221,13 @@ reneg-sec 0
 
 END
 echo '<ca>' >> /root/udp-client.ovpn
-cat /etc/openvpn/ca.crt >> /root/udp-client.ovpn
+cat /etc/openvpn/easy-rsa/keys/ca.crt >> /root/udp-client.ovpn
 echo '</ca>' >> /root/udp-client.ovpn
 echo '<cert>' >> /root/udp-client.ovpn
-cat /etc/openvpn/ca.crt >> /root/udp-client.ovpn
+sed -n '52,75p' /etc/openvpn/easy-rsa/keys/client.crt >> /root/udp-client.ovpn
 echo '</cert>' >> /root/udp-client.ovpn
 echo '<key>' >> /root/udp-client.ovpn
-cat /etc/openvpn/ca.crt >> /root/udp-client.ovpn
+cat /etc/openvpn/easy-rsa/keys/client.key >> udp-client.ovpn
 echo '</key>' >> /root/udp-client.ovpn
 echo \> DONE!
 sleep 1
