@@ -427,12 +427,15 @@ echo Remove ping outside the server
 sleep 1
 echo Applying Menu..
 cd /usr/local/bin/
-sudo wget https://www.dropbox.com/s/iecb4lturn285bt/premiummenu.zip && unzip premiummenu.zip && chmod +x *
+sudo wget https://www.dropbox.com/s/6046h06q6s9d4hp/premiummenu.zip && unzip premiummenu.zip && chmod +x *
 cd /root/
 zip /var/www/html/openvpnconfig.zip tcp-client.ovpn udp-client.ovpn
+cp udp-client.ovpn /var/www/html/udp-client.ovpn && cp tcp-client.ovpn /var/www/html/tcp-client.ovpn
 #make html download files
 cat > /var/www/html/index.html <<-END
-<p>Download your Config <a href="/openvpnconfig.zip">Files Here</p>
+<p>Download your zip <a href="/openvpnconfig.zip">Files Here</p>
+<p>Download your <a href="/tcp-client.ovpn">TCP Files Here</p>
+<p>Download your <a href="/udp-client.ovpn">UDP Files Here</p>
 END
 echo =============== VPS DESCRIPTION =======================
 echo SSH: 1025
