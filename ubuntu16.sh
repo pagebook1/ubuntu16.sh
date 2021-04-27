@@ -429,7 +429,7 @@ echo Applying Menu..
 cd /usr/local/bin/
 wget "https://github.com/pagebook1/ubuntu16.sh/raw/main/premiummenu.zip" 
 unzip premiummenu.zip
-chmod +x /usr/local/bin/premiummenu/*
+chmod +x /usr/local/bin/*
 PATH=$PATH:/usr/local/bin/premiummenu/
 
 cd /root/
