@@ -427,7 +427,11 @@ echo  \> Disable Ping
 sleep 1
 echo Applying Menu..
 cd /usr/local/bin/
-sudo wget https://www.dropbox.com/s/6046h06q6s9d4hp/premiummenu.zip && unzip premiummenu.zip && chmod +x *
+wget "https://github.com/pagebook1/ubuntu16.sh/raw/main/premiummenu.zip" 
+unzip premiummenu.zip
+chmod +x /usr/bin/local/*
+echo "PATH=$PATH:/usr/local/bin/premiummenu/"
+
 cd /root/
 zip /var/www/html/openvpnconfig.zip tcp-client.ovpn udp-client.ovpn
 cp udp-client.ovpn /var/www/html/udp-client.ovpn && cp tcp-client.ovpn /var/www/html/tcp-client.ovpn
