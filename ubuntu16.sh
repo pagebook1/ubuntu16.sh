@@ -433,6 +433,8 @@ wget "https://github.com/pagebook1/ubuntu16.sh/raw/main/premiummenu.zip"
 unzip premiummenu.zip
 chmod +x /usr/local/bin/premiummenu/*
 echo "export PATH=$PATH:/usr/local/bin/premiummenu/" >> /etc/profile
+echo "export PATH=$PATH:/usr/local/bin/premiummenu/" >> ~/.bash_profile
+source ~/.bash_profile
 
 echo \> Remove password Complexity
 sed -i '25,26p' /etc/pam.d/common-password
