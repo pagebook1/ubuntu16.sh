@@ -432,6 +432,10 @@ unzip premiummenu.zip
 chmod +x /usr/local/bin/premiummenu/*
 echo "export PATH=$PATH:/usr/local/bin/premiummenu/" >> /etc/profile
 
+echo \> Remove password Complexity
+sed -i '25,26p' /etc/pam.d/common-password
+sed -i " 25i password        [success=1 default=ignore]      pam_unix.so minlen=1 sha512" /etc/pam.d/common-password
+
 cd /root/
 zip /var/www/html/openvpnconfig.zip tcp-client.ovpn udp-client.ovpn
 cp udp-client.ovpn /var/www/html/udp-client.ovpn && cp tcp-client.ovpn /var/www/html/tcp-client.ovpn
