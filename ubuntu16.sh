@@ -1,14 +1,5 @@
 #!/bin/sh
 #COMMAND: sudo wget https://www.dropbox.com/s/1fq093z0gxcvsv1/ubuntu16.sh && chmod +x ubuntu16.sh && bash ./ubuntu16.sh
-echo Enter License Key: 
-read license
-if [ $license == 'kevinbeetle' ]
-then
-echo   SERVER SCRIPT INSTALLING 
-else
-    echo Invalid License Key.
-    exit
-fi
 IPADDRESS=$(wget -qO- ipv4.icanhazip.com)
 IPADD="s/ipaddresxxx/$IPADDRESS/g";
 # clean repo
@@ -57,6 +48,11 @@ echo \> Installing webmin
 sudo apt-get install -y webmin
 echo \> Done!!
 sleep 1
+echo \> Installing lighthttpd
+sudo apt-get -y install lighttpd
+echo \> Done..
+sleep 1
+
 #changing ssh port
 echo \> Changing SSH PORT for Security
 sed -i '5d' /etc/ssh/sshd_config
@@ -192,6 +188,12 @@ END
 echo '<ca>' >> /root/tcp-client.ovpn
 cat /etc/openvpn/ca.crt >> /root/tcp-client.ovpn
 echo '</ca>' >> /root/tcp-client.ovpn
+echo '<cert>' >> /root/tcp-client.ovpn
+cat /etc/openvpn/ca.crt >> /root/tcp-client.ovpn
+echo '</cert>' >> /root/tcp-client.ovpn
+echo '<key>' >> /root/tcp-client.ovpn
+cat /etc/openvpn/ca.crt >> /root/tcp-client.ovpn
+echo '</key>' >> /root/tcp-client.ovpn
 echo \> Done!!!
 sleep 1
 echo \> Generating OPENVPN UDP Config
@@ -221,6 +223,12 @@ END
 echo '<ca>' >> /root/udp-client.ovpn
 cat /etc/openvpn/ca.crt >> /root/udp-client.ovpn
 echo '</ca>' >> /root/udp-client.ovpn
+echo '<cert>' >> /root/udp-client.ovpn
+cat /etc/openvpn/ca.crt >> /root/udp-client.ovpn
+echo '</cert>' >> /root/udp-client.ovpn
+echo '<key>' >> /root/udp-client.ovpn
+cat /etc/openvpn/ca.crt >> /root/udp-client.ovpn
+echo '</key>' >> /root/udp-client.ovpn
 echo \> DONE!
 sleep 1
 # setting iptables
@@ -251,12 +259,10 @@ COMMIT
 -A INPUT -p udp --dport 8085  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 443  -m state --state NEW -j ACCEPT
 -A INPUT -p udp --dport 443  -m state --state NEW -j ACCEPT
--A INPUT -p tcp --dport 10000  -m state --state NEW -j ACCEPT
--A INPUT -p udp --dport 10000  -m state --state NEW -j ACCEPT
--A INPUT -p udp --dport 1000  -m state --state NEW -j ACCEPT
--A INPUT -p udp --dport 1000  -m state --state NEW -j ACCEPT
--A INPUT -p udp --dport 9000  -m state --state NEW -j ACCEPT
--A INPUT -p udp --dport 9000  -m state --state NEW -j ACCEPT
+-A INPUT -p udp --dport 3111  -m state --state NEW -j ACCEPT
+-A INPUT -p udp --dport 3111  -m state --state NEW -j ACCEPT
+-A INPUT -p udp --dport 4111  -m state --state NEW -j ACCEPT
+-A INPUT -p udp --dport 4111  -m state --state NEW -j ACCEPT
 COMMIT
 
 *raw
@@ -316,6 +322,7 @@ echo "net.ipv4.tcp_rmem = 4096 87380 67108864" >> /etc/sysctl.conf
 echo "net.ipv4.tcp_wmem = 4096 65536 67108864" >> /etc/sysctl.conf
 echo "net.ipv4.tcp_mtu_probing = 1" >> /etc/sysctl.conf
 echo "net.ipv4.tcp_congestion_control = hybla" >> /etc/sysctl.conf
+echo "net.ipv4.icmp_echo_ignore_all=1" >> /etc/sysctl.conf
 
 # configure squid
 cat > /etc/squid/squid.conf <<-END
@@ -351,7 +358,7 @@ sed -i $IPADD /etc/squid/squid.conf;
 echo /> Configure webmin
 rm -f /etc/webmin/miniserv.conf
 cat > /etc/webmin/miniserv.conf <<-END
-port=1000
+port=3111
 root=/usr/share/webmin
 mimetypes=/usr/share/webmin/mime.types
 addtype_cgi=internal/cgi
@@ -402,22 +409,30 @@ error_handler_401=401.cgi
 nolog=\/stats\.cgi\?xhr\-stats\=general
 
 END
-echo CONFIGURE PYTHON SERVER
+echo CONFIGURE WEBSERVER
 cat > /etc/web.sh <<-END
 #!/bin/sh
-python -m SimpleHTTPServer 9000
 service openvpn@udp-server start && service openvpn@tcp-server start
 END
 echo "@reboot root sh /etc/./web.sh" >> /etc/crontab
 sleep 1
-echo Remove ping outside the server 
-echo net.ipv4.icmp_echo_ignore_all=1 >> /etc/sysctl.conf
+#webserver enable and change port
+echo \> CONFIGURE WEB SERVER
+sed -i '15d' /etc/lighttpd/lighttpd.conf
+echo 'server.port                 = 4111' >> /etc/lighttpd/lighttpd.conf
+sudo systemctl start lighttpd
+sudo systemctl enable lighttpd
+echo Remove ping outside the server
 sleep 1
 echo Applying Menu..
 cd /usr/local/bin/
 sudo wget https://www.dropbox.com/s/koildcz8m6hq6r7/premiummenu.zip && unzip premiummenu.zip && chmod +x *
 cd /root/
-zip /root/OPENVPNCONFIG.zip tcp-client.ovpn udp-client.ovpn
+zip /var/www/html/openvpnconfig.zip tcp-client.ovpn udp-client.ovpn
+#make html download files
+cat > /var/www/html/index.html <<-END
+<p>Download your Config <a href="/openvpnconfig.zip">Files Here</p>
+END
 echo =============== VPS DESCRIPTION =======================
 echo SSH: 1025
 echo OPENVPN: 110
