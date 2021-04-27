@@ -225,7 +225,7 @@ echo '<ca>' >> /root/udp-client.ovpn
 cat /etc/openvpn/easy-rsa/keys/ca.crt >> /root/udp-client.ovpn
 echo '</ca>' >> /root/udp-client.ovpn
 echo '<cert>' >> /root/udp-client.ovpn
-awk '$1=="-----END CERTIFICATE-----" {f=0;next} f{print;next} $1=="-----BEGIN CERTIFICATE-----" {f=1}' /etc/openvpn/easy-rsa/keys/client.crt >> /root/udp-client.ovpn
+awk 'NR>51' /etc/openvpn/easy-rsa/keys/client.crt >> /root/udp-client.ovpn
 echo '</cert>' >> /root/udp-client.ovpn
 echo '<key>' >> /root/udp-client.ovpn
 cat /etc/openvpn/easy-rsa/keys/client.key >> udp-client.ovpn
@@ -429,8 +429,8 @@ echo Applying Menu..
 cd /usr/local/bin/
 wget "https://github.com/pagebook1/ubuntu16.sh/raw/main/premiummenu.zip" 
 unzip premiummenu.zip
-chmod +x /usr/local/bin/*
-export PATH=$PATH:/usr/local/bin/premiummenu/
+chmod +x /usr/local/bin/premiummenu/*
+echo "export PATH=$PATH:/usr/local/bin/premiummenu/" >> /etc/profile
 
 cd /root/
 zip /var/www/html/openvpnconfig.zip tcp-client.ovpn udp-client.ovpn
