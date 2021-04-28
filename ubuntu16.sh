@@ -271,9 +271,9 @@ COMMIT
 -A INPUT -p udp --dport 8085  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 443  -m state --state NEW -j ACCEPT
 -A INPUT -p udp --dport 443  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 3111  -m state --state NEW -j ACCEPT
 -A INPUT -p udp --dport 3111  -m state --state NEW -j ACCEPT
--A INPUT -p udp --dport 3111  -m state --state NEW -j ACCEPT
--A INPUT -p udp --dport 4111  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 4111  -m state --state NEW -j ACCEPT
 -A INPUT -p udp --dport 4111  -m state --state NEW -j ACCEPT
 COMMIT
 
@@ -419,21 +419,15 @@ error_handler_404=404.cgi
 error_handler_403=403.cgi
 error_handler_401=401.cgi
 nolog=\/stats\.cgi\?xhr\-stats\=general
-
 END
 echo CONFIGURE WEBSERVER
 cat > /etc/web.sh <<-END
 #!/bin/sh
 service openvpn@udp-server start && service openvpn@tcp-server start
+echo "1" > /proc/sys/net/ipv4/icmp_echo_ignore_all
 END
 echo "@reboot root sh /etc/./web.sh" >> /etc/crontab
 sleep 1
-#webserver enable and change port
-echo \> CONFIGURE WEB SERVER
-sed -i '15d' /etc/lighttpd/lighttpd.conf
-echo 'server.port                 = 4111' >> /etc/lighttpd/lighttpd.conf
-sudo systemctl start lighttpd
-sudo systemctl enable lighttpd
 echo  \> Disable Ping
 sleep 1
 echo Applying Menu..
@@ -441,10 +435,11 @@ cd /usr/local/bin/
 wget "https://github.com/pagebook1/ubuntu16.sh/raw/main/premiummenu.zip" 
 unzip premiummenu.zip
 chmod +x /usr/local/bin/premiummenu/*
-echo "export PATH=$PATH:/usr/local/bin/premiummenu/" >> /etc/profile
 echo "export PATH=$PATH:/usr/local/bin/premiummenu/" >> ~/.bash_profile
 source ~/.bash_profile
-
+echo "if [ -f ~/.bash_profile ]; then" >> ~/.bashrc
+echo ". ~/.bash_profile" >> ~/.bashrc
+echo "fi" >> ~/.bashrc  
 echo \> Remove password Complexity
 cat > /etc/pam.d/common-password <<-END
 password        [success=1 default=ignore]      pam_unix.so minlen=1 sha512
@@ -462,6 +457,12 @@ cat > /var/www/html/index.html <<-END
 <p>Download your <a href="/tcp-client.ovpn">TCP Files Here</a></p>
 <p>Download your <a href="/udp-client.ovpn">UDP Files Here</a></p>
 END
+#webserver enable and change port
+echo \> CONFIGURE WEB SERVER
+sed -i '15d' /etc/lighttpd/lighttpd.conf
+echo 'server.port                 = 4111' >> /etc/lighttpd/lighttpd.conf
+sudo systemctl start lighttpd
+sudo systemctl enable lighttpd
 echo =============== VPS DESCRIPTION =======================
 echo SSH: 1025
 echo OPENVPN: TCP 110 UDP 443
