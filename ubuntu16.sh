@@ -470,5 +470,5 @@ echo Squid: 8085
 echo WEBMIN: $IPADDRESS:3111
 echo Download Configs: $IPADDRESS:4111
 echo \> Press Enter to Reboot
-read reboot
+sleep 5
 reboot
