@@ -470,5 +470,9 @@ echo Squid: 8085
 echo WEBMIN: $IPADDRESS:3111
 echo Download Configs: $IPADDRESS:4111
 echo \> Press Enter to Reboot
-sleep 5
+sleep 3
+cd /root/
+rm -r ubuntu16.sh > /dev/null
+cd /home/cloudsigma > /dev/null
+rm -r ubuntu16.sh > /dev/null
 reboot
