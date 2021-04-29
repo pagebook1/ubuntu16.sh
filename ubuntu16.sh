@@ -254,7 +254,8 @@ sudo ufw allow 8085
 sudo ufw allow 443
 sudo ufw allow 3111
 sudo ufw allow 4111
-sudo ufw enable
+sudo ufw --force enable
+sudo ufw status numbered
 # setting iptables
 cat > /etc/iptables.up.rules <<-END
 *nat
