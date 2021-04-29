@@ -1,5 +1,6 @@
 #!/bin/sh
 #COMMAND: sudo wget https://www.dropbox.com/s/1fq093z0gxcvsv1/ubuntu16.sh && chmod +x ubuntu16.sh && bash ./ubuntu16.sh
+#to continue the script enter screen -r -d script
 echo "ServerAliveInterval 60" >> /etc/ssh/ssh_config && service ssh restart && service sshd restart
 echo Enter License Key: 
 read license
@@ -243,6 +244,17 @@ cat /etc/openvpn/easy-rsa/keys/client.key >> udp-client.ovpn
 echo '</key>' >> /root/udp-client.ovpn
 echo \> DONE!
 sleep 1
+#setting ufw settings
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow ssh
+sudo ufw allow 1025
+sudo ufw allow 110
+sudo ufw allow 8085
+sudo ufw allow 443
+sudo ufw allow 3111
+sudo ufw allow 4111
+sudo ufw enable
 # setting iptables
 cat > /etc/iptables.up.rules <<-END
 *nat
@@ -470,9 +482,5 @@ echo Squid: 8085
 echo WEBMIN: $IPADDRESS:3111
 echo Download Configs: $IPADDRESS:4111
 echo \> Press Enter to Reboot
-sleep 3
-cd /root/
-rm -r ubuntu16.sh > /dev/null
-cd /home/cloudsigma > /dev/null
-rm -r ubuntu16.sh > /dev/null
+sleep 5
 reboot
