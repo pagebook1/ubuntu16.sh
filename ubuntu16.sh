@@ -254,6 +254,8 @@ sudo ufw allow 8085
 sudo ufw allow 443
 sudo ufw allow 3111
 sudo ufw allow 4111
+sed -i '/DEFAULT_FORWARD_POLICY="DROP"/d' /etc/default/ufw
+echo "DEFAULT_FORWARD_POLICY = "ACCEPT"" >> /etc/default/ufw
 sudo ufw --force enable
 sudo ufw status numbered
 # setting iptables
