@@ -11,6 +11,8 @@ else
     echo Invalid License Key.
     exit
 fi
+servername="OnePHVPN"
+email="OnePH@vpn" 
 IPADDRESS=$(wget -qO- ipv4.icanhazip.com)
 IPADD="s/ipaddresxxx/$IPADDRESS/g";
 # clean repo
@@ -26,8 +28,6 @@ echo \> Done!!
 #echo "Enter your Email Address: "
 #read email
 #install webmin
-servername = OnePHVPN
-email = OnePH@VPN
 sed -i '$ a deb http://download.webmin.com/download/repository sarge contrib' /etc/apt/sources.list
 wget http://www.webmin.com/jcameron-key.asc
 sudo apt-key add jcameron-key.asc
