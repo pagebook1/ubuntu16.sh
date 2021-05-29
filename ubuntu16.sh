@@ -146,7 +146,7 @@ sleep 1
 echo \> Configuring OPENVPN UDP Server
 # setting UDP server
 cat > /etc/openvpn/udp-server.conf <<-END
-port 443
+port 25000
 proto udp
 dev tun
 ca ca.crt
@@ -195,6 +195,9 @@ auth-retry interact
 connect-retry 0 1
 nice -20
 reneg-sec 0
+tls-client
+tls-version-min 1.2
+tls-cipher TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256
 http-proxy $IPADDRESS 8085
 
 END
@@ -215,8 +218,7 @@ cat > /root/udp-client.ovpn <<-END
 client
 dev tun
 proto udp
-remote $IPADDRESS
-port 443
+remote $IPADDRESS 25000
 persist-key
 persist-tun
 dev tun
@@ -231,7 +233,9 @@ auth-retry interact
 connect-retry 0 1
 nice -20
 reneg-sec 0
-
+tls-client
+tls-version-min 1.2
+tls-cipher TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256
 END
 echo '<ca>' >> /root/udp-client.ovpn
 cat /etc/openvpn/easy-rsa/keys/ca.crt >> /root/udp-client.ovpn
@@ -254,6 +258,7 @@ sudo ufw allow 8085
 sudo ufw allow 443
 sudo ufw allow 3111
 sudo ufw allow 4111
+sudo ufw allow 25000
 sed -i '/DEFAULT_FORWARD_POLICY="DROP"/d' /etc/default/ufw
 echo 'DEFAULT_FORWARD_POLICY="ACCEPT"' >> /etc/default/ufw
 sudo ufw --force enable
@@ -286,6 +291,8 @@ COMMIT
 -A INPUT -p udp --dport 8085  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 443  -m state --state NEW -j ACCEPT
 -A INPUT -p udp --dport 443  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 25000  -m state --state NEW -j ACCEPT
+-A INPUT -p udp --dport 25000  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 3111  -m state --state NEW -j ACCEPT
 -A INPUT -p udp --dport 3111  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 4111  -m state --state NEW -j ACCEPT
@@ -480,7 +487,7 @@ sudo systemctl start lighttpd
 sudo systemctl enable lighttpd
 echo =============== VPS DESCRIPTION =======================
 echo SSH: 1025
-echo OPENVPN: TCP 110 UDP 443
+echo OPENVPN: TCP 110 UDP 25000
 echo Squid: 8085
 echo WEBMIN: $IPADDRESS:3111
 echo Download Configs: $IPADDRESS:4111
