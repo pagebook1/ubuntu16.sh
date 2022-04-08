@@ -16,6 +16,11 @@ email="OnePH@vpn"
 IPADDRESS=$(wget -qO- ipv4.icanhazip.com)
 IPADD="s/ipaddresxxx/$IPADDRESS/g";
 # clean repo
+
+#REmove Kernel Upgrade Restart
+sudo apt -y remove needrestart
+
+
 apt-get clean
 # update repo
 echo \> Updating the System...
