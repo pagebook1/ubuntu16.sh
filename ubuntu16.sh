@@ -1,5 +1,5 @@
 #!/bin/sh
-#COMMAND: sudo wget https://www.dropbox.com/s/1fq093z0gxcvsv1/ubuntu16.sh && chmod +x ubuntu16.sh && bash ./ubuntu16.sh
+#COMMAND: sudo wget https://raw.githubusercontent.com/pagebook1/ubuntu16.sh/main/ubuntu16.sh && chmod +x ubuntu16.sh && bash ./ubuntu16.sh
 #to continue the script enter screen -r -d script
 echo "ServerAliveInterval 60" >> /etc/ssh/ssh_config && service ssh restart && service sshd restart
 echo Enter License Key: 
